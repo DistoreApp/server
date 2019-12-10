@@ -1,38 +1,22 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, String, BIGINT
+from sqlalchemy.dialects import postgresql
 from distoreapp.database import Base
 
 
-class Author(Base):
-    __tablename__ = "authors"
+class Dump(Base):
+    __tablename__ = "dumps"
 
-    id = Column(Integer, primary_key=True)
-    name = Column(String(32))
-    discriminator = Column(String(4))
-    avatar_url = Column(String(128))
-
-    messages = relationship("Message", backref="author", lazy=True)
-
-    def __repr__(self):
-        return "<Author {}>".format(self.id)
+    dump_id = Column(String(10), primary_key=True, unique=True)
+    message_ids = Column(postgresql.ARRAY(BIGINT))
 
 
 class Message(Base):
     __tablename__ = "messages"
 
-    id = Column(Integer, primary_key=True)
-    content = Column(String(2000))
-
-    author_id = Column(Integer, ForeignKey("author.id"))
-
-    attachments = relationship("Attachment", backref="message", lazy=True)
-
-
-class Attachment(Base):
-    __tablename__ = "attachments"
-
-    id = Column(Integer, primary_key=True)
-    url = Column(String(1028))
-
-    message_id = Column(Integer, ForeignKey("message.id"))
-
+    message_id = Column(BIGINT, primary_key=True, unique=True)
+    message_content = Column(String(2001))
+    attachments = Column(postgresql.ARRAY(String))
+    author_id = Column(BIGINT)
+    author_name = Column(String(32))
+    author_discriminator = Column(String(4))
+    author_avatar_url = Column(String)

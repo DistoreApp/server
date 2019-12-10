@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Distore</title>
+    </head>
+    <body>
+        {% for message in messages %}
+            <div>
+                <img style="width: 64px;" src="{{ message.author_avatar_url }}">
+                <h1>{{ message.author_name }}#{{ message.author_discriminator }}</h1>
+                {{ message.message_content }}
+            </div>
+        {% endfor %}
+    </body>
+</html>
