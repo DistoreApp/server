@@ -1,5 +1,6 @@
 from sqlalchemy import Column, String, BIGINT
 from sqlalchemy.dialects import postgresql
+
 from distoreapp.database import Base
 
 
